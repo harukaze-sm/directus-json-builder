@@ -1,5 +1,5 @@
 # directus-json-builder
-Interface to implement json fields with any type of input.
+Singleton version of repeater interface.
 
 
 # Setup
