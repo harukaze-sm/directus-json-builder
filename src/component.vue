@@ -8,13 +8,7 @@
 
   <v-list v-if="!isEmpty(internalValue)">
     <v-list-item block @click="openItem()">
-      <template #item="{ element, _index }">
-        <render-template
-          :fields="fields"
-          :item="{ ...defaults, ...element }"
-          :template="templateWithDefaults"
-        />
-      </template>
+      <span>{{ defaults }}</span>
       <div class="spacer" />
     </v-list-item>
   </v-list>
@@ -168,16 +162,15 @@ export default defineComponent({
     }
 
     const defaults = computed(() => {
-      const values: Record<string, any> = {};
+      let values = "";
 
       for (const field of props.fields) {
-        if (
-          field.schema?.default_value !== undefined &&
-          field.schema?.default_value !== null
-        ) {
-          values[field.field!] = field.schema.default_value;
-        }
+        values += props.value[field.field!]
+          ? `${props.value[field.field!]}, `
+          : "";
       }
+
+      values = values.length > 0 ? values.slice(0, values.length - 2) : "";
 
       return values;
     });
@@ -215,8 +208,6 @@ export default defineComponent({
       closeDrawer();
       confirmDiscard.value = false;
     }
-
-    console.error(props.fields[0].field);
 
     return {
       internalValue,
